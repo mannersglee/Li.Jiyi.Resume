@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>李纪仪 | 个人信息平台</title>
+    <meta name="description" content="李纪仪的个人简历、项目作品集、学习笔记与求职信息平台。">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="#home">李纪仪</a>
+      <nav class="nav" aria-label="主导航">
+        <a href="#profile">个人信息</a>
+        <a href="#education-section">教育</a>
+        <a href="#experience-section">实习</a>
+        <a href="#portfolio">作品集</a>
+        <a href="#notes">学习笔记</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero" id="home">
+        <div class="hero-copy">
+          <p class="eyebrow">Internship & Career Profile</p>
+          <h1>李纪仪</h1>
+          <p class="role" id="role">统计学 / 数据科学 / 量化研究</p>
+          <p class="summary" id="summary"></p>
+          <div class="actions">
+            <button class="button primary" id="download-resume" type="button">下载 PDF 简历</button>
+            <a class="button secondary" href="mailto:755273239@qq.com">联系我</a>
+          </div>
+        </div>
+        <aside class="profile-card" id="profile" aria-label="个人信息">
+          <div class="profile-card-head">
+            <figure class="portrait-wrap">
+              <img id="portrait" src="assets/profile-white.jpg" alt="李纪仪证件照">
+            </figure>
+            <div class="profile-identity">
+              <p class="section-kicker">Profile</p>
+              <h2>个人信息</h2>
+              <p id="profile-role">统计学 / 数据科学 / 量化研究</p>
+            </div>
+          </div>
+          <div class="profile-block">
+            <dl class="info-grid compact" id="personal-info"></dl>
+          </div>
+          <div class="profile-block">
+            <p class="section-kicker">Skills</p>
+            <h2>能力标签</h2>
+            <div class="tag-list" id="skills"></div>
+            <div class="cert-list" id="certificates"></div>
+          </div>
+        </aside>
+      </section>
+
+      <section class="section split" id="education-section">
+        <div class="section-heading">
+          <p class="section-kicker">Education</p>
+          <h2>教育经历</h2>
+        </div>
+        <div id="education"></div>
+      </section>
+
+      <section class="section split info-band" id="experience-section">
+        <div class="section-heading with-link">
+          <div>
+            <p class="section-kicker">Internship</p>
+            <h2>实习经历</h2>
+          </div>
+          <a class="text-link" href="experience.html">查看所有实习</a>
+        </div>
+        <div class="stack" id="experience"></div>
+      </section>
+
+      <section class="section split" id="projects">
+        <div class="section-heading">
+          <p class="section-kicker">Research & Projects</p>
+          <h2>项目经历</h2>
+        </div>
+        <div class="content-list" id="project-list"></div>
+      </section>
+
+      <section class="section split" id="portfolio">
+        <div class="section-heading with-link">
+          <div>
+            <p class="section-kicker">Portfolio</p>
+            <h2>作品集</h2>
+          </div>
+          <a class="text-link" href="portfolio.html">查看所有作品</a>
+        </div>
+        <div class="portfolio-list" id="portfolio-list"></div>
+      </section>
+
+      <section class="section notes-band" id="notes">
+        <div class="section-heading with-link">
+          <div>
+            <p class="section-kicker">Notes</p>
+            <h2>学习笔记</h2>
+          </div>
+          <a class="text-link" href="notes.html">查看所有笔记</a>
+        </div>
+        <div class="notes-list" id="notes-list"></div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <span>© <span id="year"></span> 李纪仪</span>
+      <button class="footer-button" id="download-resume-footer" type="button">下载 PDF 简历</button>
+    </footer>
+
+    <script src="scripts.js"></script>
+  </body>
+</html>

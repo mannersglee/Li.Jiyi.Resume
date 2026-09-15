@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>李纪仪 - 简历</title>
+    <link rel="stylesheet" href="resume-template.css">
+  </head>
+  <body>
+    <main class="resume-page" id="resume-root"></main>
+    <script src="scripts.js"></script>
+    <script>
+      fetch("data/profile.json")
+        .then((response) => response.json())
+        .then((data) => {
+          renderResumeDocument(data);
+          document.title = `${data.person.name} - 简历`;
+          setTimeout(() => window.print(), 350);
+        });
+    </script>
+  </body>
+</html>

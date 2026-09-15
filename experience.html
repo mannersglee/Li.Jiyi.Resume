@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>全部实习 | 李纪仪</title>
+    <meta name="description" content="李纪仪的实习经历列表。">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="index.html">李纪仪</a>
+      <nav class="nav" aria-label="主导航">
+        <a href="index.html#profile">个人信息</a>
+        <a href="index.html#education-section">教育</a>
+        <a href="experience.html">实习</a>
+        <a href="portfolio.html">作品集</a>
+        <a href="notes.html">学习笔记</a>
+      </nav>
+    </header>
+
+    <main class="page-main">
+      <section class="page-title">
+        <p class="section-kicker">Internship</p>
+        <h1>全部实习</h1>
+        <p>用于集中展示实习、科研助理、项目协作和后续可公开的工作经历。</p>
+      </section>
+
+      <section class="section wide-list">
+        <div class="stack" id="all-experience-list"></div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <span>© <span id="year"></span> 李纪仪</span>
+      <a href="index.html">返回首页</a>
+    </footer>
+
+    <script src="scripts.js"></script>
+    <script>
+      fetch("data/profile.json")
+        .then((response) => response.json())
+        .then((data) => {
+          document.getElementById("year").textContent = new Date().getFullYear();
+          document.getElementById("all-experience-list").innerHTML = renderExperienceItems(data.experience);
+        });
+    </script>
+  </body>
+</html>
