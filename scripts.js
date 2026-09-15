@@ -452,6 +452,20 @@ const renderNotebook = (notebook) => notebook.cells.map((cell) => {
   return "";
 }).join("");
 
+const typesetMath = async (root) => {
+  if (!window.MathJax) {
+    return;
+  }
+
+  if (window.MathJax.startup?.promise) {
+    await window.MathJax.startup.promise;
+  }
+
+  if (window.MathJax.typesetPromise) {
+    await window.MathJax.typesetPromise([root]);
+  }
+};
+
 const renderNoteViewer = async () => {
   const root = document.getElementById("note-content");
   if (!root) {
@@ -483,17 +497,13 @@ const renderNoteViewer = async () => {
     if (file.endsWith(".ipynb")) {
       const notebook = await response.json();
       root.innerHTML = renderNotebook(notebook);
-      if (window.MathJax?.typesetPromise) {
-        await window.MathJax.typesetPromise([root]);
-      }
+      await typesetMath(root);
       return;
     }
 
     const markdown = await response.text();
     root.innerHTML = `<section class="note-cell markdown-cell">${renderMarkdown(markdown)}</section>`;
-    if (window.MathJax?.typesetPromise) {
-      await window.MathJax.typesetPromise([root]);
-    }
+    await typesetMath(root);
   } catch (error) {
     root.innerHTML = `<p>笔记加载失败：${escapeHtml(error.message)}</p>`;
   }
