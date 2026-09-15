@@ -27,6 +27,7 @@
 - 个人信息、经历、项目、技能、作品集和笔记入口集中维护在 `data/profile.json`。
 - 证件照和 PDF 简历放在 `assets/`。
 - 学习笔记可以继续放在 `notes/`，再把对应链接添加到 `data/profile.json` 的 `notes` 字段。
+- `.md` 和 `.ipynb` 笔记会通过 `note-viewer.html?file=...` 在网页中渲染，避免直接打开 notebook JSON。
 - 首页的“下载 PDF 简历”会根据 `data/profile.json` 生成打印版简历，浏览器弹出打印窗口后选择“另存为 PDF”即可。
 
 ## 本地预览

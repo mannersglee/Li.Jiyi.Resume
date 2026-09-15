@@ -223,6 +223,251 @@ h3 {
   padding-top: 28px;
 }
 
+.note-title-bar {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.note-reader-section {
+  padding-top: 30px;
+  background: #f4f7f5;
+}
+
+.note-reader {
+  max-width: 1040px;
+  margin: 0 auto;
+}
+
+.note-cell {
+  margin-bottom: 18px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--white);
+  overflow: hidden;
+}
+
+.markdown-cell {
+  padding: 22px;
+}
+
+.markdown-cell h1,
+.markdown-cell h2,
+.markdown-cell h3,
+.markdown-cell h4,
+.markdown-cell h5 {
+  margin: 0 0 12px;
+}
+
+.markdown-cell h1 {
+  font-size: 32px;
+}
+
+.markdown-cell h2 {
+  padding-top: 6px;
+  font-size: 24px;
+}
+
+.markdown-cell h3 {
+  font-size: 19px;
+}
+
+.markdown-cell h4 {
+  font-size: 17px;
+}
+
+.markdown-cell h5 {
+  color: var(--muted);
+  font-size: 15px;
+}
+
+.markdown-cell .align-center {
+  text-align: center;
+}
+
+.markdown-cell blockquote {
+  margin: 0 0 16px;
+  padding: 0 16px;
+  color: #57606a;
+  border-left: 4px solid #d0d7de;
+}
+
+.markdown-cell blockquote p {
+  margin: 6px 0;
+}
+
+.markdown-cell ol,
+.markdown-cell ul {
+  margin: 0 0 16px;
+  padding-left: 28px;
+}
+
+.markdown-cell li {
+  margin: 5px 0;
+}
+
+.markdown-cell hr {
+  height: 1px;
+  margin: 24px 0;
+  border: 0;
+  background: #d8dee4;
+}
+
+.math-block {
+  overflow-x: auto;
+  margin: 14px 0;
+  padding: 14px 16px;
+  border: 1px solid #d8dee4;
+  border-radius: 8px;
+  color: #24292f;
+  background: #f6f8fa;
+  font-family: "Times New Roman", "STIX Two Text", serif;
+  font-size: 17px;
+  line-height: 1.7;
+  text-align: center;
+  white-space: pre-wrap;
+  display: block;
+}
+
+.math-inline {
+  padding: 0 3px;
+  color: #24292f;
+  font-family: "Times New Roman", "STIX Two Text", serif;
+  font-size: 1.03em;
+  display: inline;
+}
+
+.markdown-cell p:last-child,
+.note-cell ul:last-child {
+  margin-bottom: 0;
+}
+
+.note-cell pre {
+  overflow-x: auto;
+  margin: 0;
+  color: #24292f;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.note-cell code {
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+}
+
+.markdown-cell p code,
+.markdown-cell li code {
+  padding: 2px 5px;
+  border-radius: 4px;
+  background: #eef2f5;
+}
+
+.cell-label {
+  flex: 0 0 62px;
+  padding-top: 16px;
+  color: #57606a;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: 13px;
+  text-align: right;
+}
+
+.nb-input,
+.nb-output,
+.nb-output-empty {
+  display: flex;
+  border-top: 1px solid #d8dee4;
+}
+
+.code-cell .nb-input:first-child {
+  border-top: 0;
+}
+
+.nb-input pre,
+.nb-output pre {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 16px;
+}
+
+.nb-input pre {
+  background: #f6f8fa;
+}
+
+.nb-output::before,
+.nb-output-empty::before {
+  content: "Out";
+  flex: 0 0 62px;
+  padding-top: 16px;
+  color: #57606a;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: 13px;
+  text-align: right;
+}
+
+.nb-output-plain pre,
+.nb-output-stream pre,
+.nb-output-error pre {
+  background: #ffffff;
+  white-space: pre-wrap;
+}
+
+.nb-output-stream::before {
+  content: "";
+}
+
+.nb-output-stream.stderr pre,
+.nb-output-error pre {
+  color: #b42318;
+}
+
+.nb-output-image {
+  align-items: flex-start;
+}
+
+.nb-output-image img {
+  display: block;
+  max-width: calc(100% - 62px);
+  height: auto;
+  padding: 16px;
+}
+
+.nb-output-html {
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow-x: auto;
+  padding: 16px;
+}
+
+.nb-output-html table {
+  border-collapse: collapse;
+  width: max-content;
+  max-width: 100%;
+  font-size: 14px;
+}
+
+.nb-output-html th,
+.nb-output-html td {
+  padding: 6px 10px;
+  border: 1px solid #d8dee4;
+  text-align: right;
+}
+
+.nb-output-html th {
+  background: #f6f8fa;
+  font-weight: 700;
+}
+
+.nb-output-empty {
+  padding: 14px 16px 14px 0;
+  color: #57606a;
+  font-size: 14px;
+}
+
+.nb-output-empty::before {
+  padding-top: 0;
+  margin-right: 16px;
+}
+
 .profile-card {
   display: grid;
   gap: 18px;
@@ -496,7 +741,9 @@ ul {
   }
 
   .item-head,
-  .footer {
+  .footer,
+  .note-title-bar {
     flex-direction: column;
+    align-items: flex-start;
   }
 }

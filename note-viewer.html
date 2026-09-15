@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>笔记阅读 | 李纪仪</title>
+    <meta name="description" content="李纪仪的学习笔记阅读页，支持 Markdown 和 Jupyter Notebook。">
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <header class="topbar">
+      <a class="brand" href="index.html">李纪仪</a>
+      <nav class="nav" aria-label="主导航">
+        <a href="index.html#profile">个人信息</a>
+        <a href="index.html#education-section">教育</a>
+        <a href="experience.html">实习</a>
+        <a href="portfolio.html">作品集</a>
+        <a href="notes.html">学习笔记</a>
+      </nav>
+    </header>
+
+    <main class="page-main">
+      <section class="page-title note-title-bar">
+        <div>
+          <p class="section-kicker" id="note-meta">Note</p>
+          <h1 id="note-title">笔记阅读</h1>
+          <p>支持在网页中直接阅读 Markdown 与 Jupyter Notebook 内容。</p>
+        </div>
+        <a class="text-link" id="note-raw-link" href="#">查看原文件</a>
+      </section>
+
+      <section class="section note-reader-section">
+        <article class="note-reader" id="note-content">
+          <p>正在加载笔记...</p>
+        </article>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <span>© 李纪仪</span>
+      <a href="notes.html">返回笔记列表</a>
+    </footer>
+
+    <script>
+      window.MathJax = {
+        tex: {
+          inlineMath: [["\\(", "\\)"]],
+          displayMath: [["\\[", "\\]"]]
+        },
+        svg: {
+          fontCache: "global"
+        }
+      };
+    </script>
+    <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+    <script src="scripts.js"></script>
+  </body>
+</html>

@@ -1,4 +1,13 @@
-const renderList = (items) => items.map((item) => `<li>${item}</li>`).join("");
+const escapeHtml = (value = "") => String(value)
+  .replaceAll("&", "&amp;")
+  .replaceAll("<", "&lt;")
+  .replaceAll(">", "&gt;")
+  .replaceAll('"', "&quot;")
+  .replaceAll("'", "&#039;");
+
+const noteViewerLink = (link) => `note-viewer.html?file=${encodeURIComponent(link)}`;
+
+const renderList = (items) => items.map((item) => `<li>${escapeHtml(item)}</li>`).join("");
 
 const renderPortfolioItems = (items) => items.map((item) => `
   <article class="content-card">
@@ -13,10 +22,10 @@ const renderPortfolioItems = (items) => items.map((item) => `
 const renderNoteItems = (items) => items.map((item) => `
   <article class="content-card">
     <div class="item-head">
-      <h3><a href="${item.link}">${item.title}</a></h3>
-      <span class="status">${item.category} · ${item.date}</span>
+      <h3><a href="${noteViewerLink(item.link)}">${escapeHtml(item.title)}</a></h3>
+      <span class="status">${escapeHtml(item.category)} · ${escapeHtml(item.date)}</span>
     </div>
-    <p>${item.summary || ""}</p>
+    <p>${escapeHtml(item.summary || "")}</p>
   </article>
 `).join("");
 
@@ -140,6 +149,356 @@ const setupResumeDownload = () => {
   });
 };
 
+const renderMarkdown = (markdown) => {
+  const lines = markdown.replace(/\r\n/g, "\n").split("\n");
+  const html = [];
+  let inCode = false;
+  let inMath = false;
+  let inHtmlHeading = false;
+  let htmlHeadingLevel = 1;
+  let htmlHeadingLines = [];
+  let codeLang = "";
+  let codeLines = [];
+  let mathLines = [];
+  let listLines = [];
+  let listType = "";
+  let quoteLines = [];
+  let paragraph = [];
+
+  const flushParagraph = () => {
+    if (paragraph.length) {
+      html.push(`<p>${inlineMarkdown(paragraph.join(" "))}</p>`);
+      paragraph = [];
+    }
+  };
+
+  const flushList = () => {
+    if (listLines.length) {
+      const tag = listType === "ol" ? "ol" : "ul";
+      html.push(`<${tag}>${listLines.map((item) => `<li>${inlineMarkdown(item)}</li>`).join("")}</${tag}>`);
+      listLines = [];
+      listType = "";
+    }
+  };
+
+  const flushQuote = () => {
+    if (quoteLines.length) {
+      html.push(`<blockquote>${quoteLines.map((item) => `<p>${inlineMarkdown(item)}</p>`).join("")}</blockquote>`);
+      quoteLines = [];
+    }
+  };
+
+  const flushCode = () => {
+    html.push(`<pre><code class="language-${escapeHtml(codeLang)}">${escapeHtml(codeLines.join("\n"))}</code></pre>`);
+    codeLines = [];
+    codeLang = "";
+  };
+
+  const flushMath = () => {
+    html.push(`<div class="math-block">\\[${escapeHtml(mathLines.join("\n"))}\\]</div>`);
+    mathLines = [];
+  };
+
+  const renderMathBlock = (value) => {
+    html.push(`<div class="math-block">\\[${escapeHtml(value.trim())}\\]</div>`);
+  };
+
+  const flushHtmlHeading = () => {
+    html.push(`<h${htmlHeadingLevel} class="align-center">${inlineMarkdown(htmlHeadingLines.join(" ").trim())}</h${htmlHeadingLevel}>`);
+    htmlHeadingLines = [];
+    htmlHeadingLevel = 1;
+  };
+
+  lines.forEach((line) => {
+    if (inHtmlHeading) {
+      const closeHeading = line.match(/^\s*<\/h([1-5])>\s*$/i);
+      if (closeHeading) {
+        flushHtmlHeading();
+        inHtmlHeading = false;
+      } else {
+        htmlHeadingLines.push(line.trim());
+      }
+      return;
+    }
+
+    const codeMatch = line.match(/^```(\w+)?\s*$/);
+    if (codeMatch) {
+      if (inCode) {
+        flushCode();
+        inCode = false;
+      } else {
+        flushParagraph();
+        flushList();
+        inCode = true;
+        codeLang = codeMatch[1] || "";
+      }
+      return;
+    }
+
+    if (line.trim() === "$$") {
+      if (inMath) {
+        flushMath();
+        inMath = false;
+      } else {
+        flushParagraph();
+        flushList();
+        flushQuote();
+        inMath = true;
+      }
+      return;
+    }
+
+    const singleLineMath = line.trim().match(/^\$\$(.+)\$\$$/);
+    if (singleLineMath) {
+      flushParagraph();
+      flushList();
+      flushQuote();
+      renderMathBlock(singleLineMath[1]);
+      return;
+    }
+
+    if (inCode) {
+      codeLines.push(line);
+      return;
+    }
+
+    if (inMath) {
+      mathLines.push(line);
+      return;
+    }
+
+    if (!line.trim()) {
+      flushParagraph();
+      flushList();
+      flushQuote();
+      return;
+    }
+
+    const rawHtmlHeading = line.match(/^<h([1-5])(?:\s+[^>]*)?>\s*(.*?)\s*<\/h\1>$/i);
+    if (rawHtmlHeading) {
+      flushParagraph();
+      flushList();
+      flushQuote();
+      html.push(`<h${rawHtmlHeading[1]} class="align-center">${inlineMarkdown(rawHtmlHeading[2])}</h${rawHtmlHeading[1]}>`);
+      return;
+    }
+
+    const openHtmlHeading = line.match(/^<h([1-5])(?:\s+[^>]*)?>\s*$/i);
+    if (openHtmlHeading) {
+      flushParagraph();
+      flushList();
+      flushQuote();
+      inHtmlHeading = true;
+      htmlHeadingLevel = Number(openHtmlHeading[1]);
+      htmlHeadingLines = [];
+      return;
+    }
+
+    if (/^---+$/.test(line.trim())) {
+      flushParagraph();
+      flushList();
+      flushQuote();
+      html.push("<hr>");
+      return;
+    }
+
+    const heading = line.match(/^(#{1,5})\s+(.+)$/);
+    if (heading) {
+      flushParagraph();
+      flushList();
+      flushQuote();
+      html.push(`<h${heading[1].length}>${inlineMarkdown(heading[2])}</h${heading[1].length}>`);
+      return;
+    }
+
+    const listItem = line.match(/^[-*]\s+(.+)$/);
+    if (listItem) {
+      flushParagraph();
+      flushQuote();
+      if (listType && listType !== "ul") {
+        flushList();
+      }
+      listType = "ul";
+      listLines.push(listItem[1]);
+      return;
+    }
+
+    const orderedItem = line.match(/^\d+\.\s+(.+)$/);
+    if (orderedItem) {
+      flushParagraph();
+      flushQuote();
+      if (listType && listType !== "ol") {
+        flushList();
+      }
+      listType = "ol";
+      listLines.push(orderedItem[1]);
+      return;
+    }
+
+    const quote = line.match(/^>\s*(.*)$/);
+    if (quote) {
+      flushParagraph();
+      flushList();
+      quoteLines.push(quote[1]);
+      return;
+    }
+
+    paragraph.push(line.trim());
+  });
+
+  flushParagraph();
+  flushList();
+  flushQuote();
+  if (inCode) {
+    flushCode();
+  }
+  if (inMath) {
+    flushMath();
+  }
+  if (inHtmlHeading) {
+    flushHtmlHeading();
+  }
+
+  return html.join("\n");
+};
+
+const inlineMarkdown = (value) => escapeHtml(value)
+  .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
+  .replace(/`([^`]+)`/g, "<code>$1</code>")
+  .replace(/(^|[^$])\$([^$\n]+)\$(?!\$)/g, '$1<span class="math-inline">\\($2\\)</span>');
+
+const normalizeOutputData = (value) => Array.isArray(value) ? value.join("") : value || "";
+
+const renderNotebookOutput = (output) => {
+  if (output.output_type === "stream") {
+    return `
+      <div class="nb-output nb-output-stream ${output.name === "stderr" ? "stderr" : ""}">
+        <pre>${escapeHtml(normalizeOutputData(output.text))}</pre>
+      </div>
+    `;
+  }
+
+  if (output.output_type === "error") {
+    const traceback = output.traceback ? output.traceback.join("\n") : `${output.ename}: ${output.evalue}`;
+    return `
+      <div class="nb-output nb-output-error">
+        <pre>${escapeHtml(traceback)}</pre>
+      </div>
+    `;
+  }
+
+  if (output.output_type === "display_data" || output.output_type === "execute_result") {
+    const data = output.data || {};
+
+    if (data["image/png"]) {
+      return `
+        <div class="nb-output nb-output-image">
+          <img src="data:image/png;base64,${normalizeOutputData(data["image/png"])}" alt="notebook output">
+        </div>
+      `;
+    }
+
+    if (data["image/jpeg"]) {
+      return `
+        <div class="nb-output nb-output-image">
+          <img src="data:image/jpeg;base64,${normalizeOutputData(data["image/jpeg"])}" alt="notebook output">
+        </div>
+      `;
+    }
+
+    if (data["text/html"]) {
+      return `<div class="nb-output nb-output-html">${normalizeOutputData(data["text/html"])}</div>`;
+    }
+
+    if (data["text/plain"]) {
+      return `
+        <div class="nb-output nb-output-plain">
+          <pre>${escapeHtml(normalizeOutputData(data["text/plain"]))}</pre>
+        </div>
+      `;
+    }
+  }
+
+  return "";
+};
+
+const renderNotebookOutputs = (cell) => {
+  if (!cell.outputs || cell.outputs.length === 0) {
+    return `<div class="nb-output-empty">未执行</div>`;
+  }
+
+  return `<div class="nb-outputs">${cell.outputs.map(renderNotebookOutput).join("")}</div>`;
+};
+
+const renderNotebook = (notebook) => notebook.cells.map((cell) => {
+  const source = Array.isArray(cell.source) ? cell.source.join("") : cell.source || "";
+  if (cell.cell_type === "markdown") {
+    return `<section class="note-cell markdown-cell">${renderMarkdown(source)}</section>`;
+  }
+
+  if (cell.cell_type === "code") {
+    const count = cell.execution_count === null ? "" : `[${cell.execution_count}]`;
+    return `
+      <section class="note-cell code-cell">
+        <div class="nb-input">
+          <div class="cell-label">In ${count}</div>
+          <pre><code>${escapeHtml(source)}</code></pre>
+        </div>
+        ${renderNotebookOutputs(cell)}
+      </section>
+    `;
+  }
+
+  return "";
+}).join("");
+
+const renderNoteViewer = async () => {
+  const root = document.getElementById("note-content");
+  if (!root) {
+    return;
+  }
+
+  const params = new URLSearchParams(window.location.search);
+  const file = params.get("file");
+  const title = document.getElementById("note-title");
+  const meta = document.getElementById("note-meta");
+  const rawLink = document.getElementById("note-raw-link");
+
+  if (!file || !file.startsWith("notes/")) {
+    root.innerHTML = "<p>未找到笔记文件。</p>";
+    return;
+  }
+
+  try {
+    const response = await fetch(file);
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}`);
+    }
+
+    rawLink.href = file;
+    rawLink.textContent = "查看原文件";
+    title.textContent = decodeURIComponent(file.split("/").pop());
+    meta.textContent = file.endsWith(".ipynb") ? "Jupyter Notebook" : "Markdown Note";
+
+    if (file.endsWith(".ipynb")) {
+      const notebook = await response.json();
+      root.innerHTML = renderNotebook(notebook);
+      if (window.MathJax?.typesetPromise) {
+        await window.MathJax.typesetPromise([root]);
+      }
+      return;
+    }
+
+    const markdown = await response.text();
+    root.innerHTML = `<section class="note-cell markdown-cell">${renderMarkdown(markdown)}</section>`;
+    if (window.MathJax?.typesetPromise) {
+      await window.MathJax.typesetPromise([root]);
+    }
+  } catch (error) {
+    root.innerHTML = `<p>笔记加载失败：${escapeHtml(error.message)}</p>`;
+  }
+};
+
 const renderProfile = (data) => {
   if (!document.getElementById("role")) {
     return;
@@ -198,3 +557,5 @@ fetch("data/profile.json")
       summary.textContent = "个人信息加载失败，请通过本地服务器或 GitHub Pages 访问本站点。";
     }
   });
+
+renderNoteViewer();
