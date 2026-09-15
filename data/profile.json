@@ -126,7 +126,7 @@
       "title": "机器学习",
       "category": "学习笔记",
       "date": "2026-09-15",
-      "link": "notes/第1次课程探究性学习任务.md",
+      "link": "notes/machine-learning-note.ipynb",
       "summary": "整理监督学习、无监督学习、模型评估、特征工程和深度学习的复习路径。"
     }
   ]
