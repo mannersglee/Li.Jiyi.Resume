@@ -123,39 +123,11 @@
   ],
   "notes": [
     {
-      "title": "机器学习复习索引",
+      "title": "机器学习",
       "category": "学习笔记",
       "date": "2026-09-15",
-      "link": "notes/machine-learning-index.md",
+      "link": "notes/machine-learning-note.ipynb",
       "summary": "整理监督学习、无监督学习、模型评估、特征工程和深度学习的复习路径。"
-    },
-    {
-      "title": "时间序列分析笔记",
-      "category": "课程笔记",
-      "date": "2026-09-15",
-      "link": "notes/time-series-index.md",
-      "summary": "预留 ARIMA、状态空间模型、频域分析和金融时间序列应用的笔记入口。"
-    },
-    {
-      "title": "数据库与数据工程笔记",
-      "category": "工程笔记",
-      "date": "2026-09-15",
-      "link": "notes/database-engineering-index.md",
-      "summary": "记录数据库设计、数据清洗、入库流程、查询优化和数据一致性检查经验。"
-    },
-    {
-      "title": "因果推断学习笔记",
-      "category": "研究笔记",
-      "date": "2026-09-15",
-      "link": "notes/causal-inference-index.md",
-      "summary": "沉淀潜在结果框架、处理效应识别、动态因果效应和论文阅读笔记。"
-    },
-    {
-      "title": "量化研究问题清单",
-      "category": "求职准备",
-      "date": "2026-09-15",
-      "link": "notes/quant-research-questions.md",
-      "summary": "整理策略评价、组合优化、假设检验、数据库和 Python 工程相关面试问题。"
     }
   ]
 }
