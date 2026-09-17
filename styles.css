@@ -744,6 +744,36 @@ ul {
   padding: 20px;
 }
 
+.student-work-card {
+  display: grid;
+  grid-template-columns: 46px minmax(0, 1fr);
+  gap: 16px;
+  align-items: start;
+}
+
+.student-work-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  color: var(--green);
+  border: 1px solid rgba(46, 111, 94, 0.24);
+  border-radius: 6px;
+  background: rgba(46, 111, 94, 0.08);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.student-work-content {
+  min-width: 0;
+}
+
+.student-work-content p {
+  margin-bottom: 0;
+  color: var(--muted);
+}
+
 .item-head {
   display: flex;
   justify-content: space-between;
@@ -980,6 +1010,16 @@ ul {
   .timeline-item,
   .markdown-cell {
     padding: 16px;
+  }
+
+  .student-work-card {
+    grid-template-columns: 38px minmax(0, 1fr);
+    gap: 12px;
+  }
+
+  .student-work-number {
+    width: 36px;
+    height: 36px;
   }
 
   .card-attachments {

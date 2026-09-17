@@ -8,9 +8,9 @@
   </head>
   <body>
     <main class="resume-page" id="resume-root"></main>
-    <script src="scripts.js?v=20260917-4"></script>
+    <script src="scripts.js?v=20260917-5"></script>
     <script>
-      fetch("data/profile.json")
+      fetch("data/profile.json?v=20260917-5")
         .then((response) => response.json())
         .then((data) => {
           renderResumeDocument(data);

@@ -74,6 +74,19 @@ const renderProjectItems = (items) => items.map((item) => `
   </article>
 `).join("");
 
+const renderStudentWorkItems = (items) => items.map((item, index) => `
+  <article class="content-card student-work-card">
+    <span class="student-work-number" aria-hidden="true">${String(index + 1).padStart(2, "0")}</span>
+    <div class="student-work-content">
+      <div class="item-head">
+        <h3>${escapeHtml(item.title)}</h3>
+        <span class="status">${escapeHtml(item.period)}</span>
+      </div>
+      <p>${escapeHtml(item.description)}</p>
+    </div>
+  </article>
+`).join("");
+
 const textList = (items, limit = items.length) => items
   .slice(0, limit)
   .map((item) => `<li>${item}</li>`)
@@ -577,11 +590,13 @@ const renderProfile = (data) => {
 
   document.getElementById("portfolio-list").innerHTML = renderPortfolioItems(data.portfolio.slice(0, 3));
 
+  document.getElementById("student-work-list").innerHTML = renderStudentWorkItems(data.studentWork);
+
   document.getElementById("notes-list").innerHTML = renderNoteItems(data.notes.slice(0, 3));
   setupResumeDownload();
 };
 
-fetch("data/profile.json")
+fetch("data/profile.json?v=20260917-5")
   .then((response) => response.json())
   .then(renderProfile)
   .catch(() => {
