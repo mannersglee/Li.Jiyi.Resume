@@ -17,10 +17,12 @@
 
 html {
   scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
   margin: 0;
+  overflow-x: hidden;
   color: var(--ink);
   background: var(--paper);
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
@@ -101,7 +103,7 @@ p {
 
 h1 {
   margin-bottom: 8px;
-  font-size: clamp(48px, 8vw, 96px);
+  font-size: 72px;
   line-height: 1;
   letter-spacing: 0;
 }
@@ -210,7 +212,7 @@ h3 {
 
 .page-title h1 {
   margin-bottom: 12px;
-  font-size: clamp(40px, 7vw, 72px);
+  font-size: 56px;
 }
 
 .page-title p {
@@ -225,9 +227,45 @@ h3 {
 
 .note-title-bar {
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   justify-content: space-between;
   gap: 24px;
+  padding-top: 52px;
+  padding-bottom: 28px;
+}
+
+.note-title-copy {
+  min-width: 0;
+}
+
+.note-title-bar h1 {
+  max-width: 780px;
+  margin-bottom: 0;
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", "PingFang SC", monospace;
+  font-size: 30px;
+  font-weight: 750;
+  line-height: 1.28;
+  overflow-wrap: anywhere;
+}
+
+.note-title-bar .section-kicker {
+  margin-bottom: 10px;
+  color: var(--muted);
+}
+
+.note-title-bar .text-link {
+  flex: 0 0 auto;
+  min-height: 38px;
+  padding: 7px 12px;
+  border: 1px solid rgba(50, 95, 143, 0.3);
+  border-radius: 6px;
+  background: rgba(50, 95, 143, 0.05);
+  line-height: 22px;
+}
+
+.note-title-bar .text-link:hover {
+  border-color: var(--blue);
+  background: rgba(50, 95, 143, 0.1);
 }
 
 .note-reader-section {
@@ -236,11 +274,13 @@ h3 {
 }
 
 .note-reader {
+  min-width: 0;
   max-width: 1040px;
   margin: 0 auto;
 }
 
 .note-cell {
+  min-width: 0;
   margin-bottom: 18px;
   border: 1px solid var(--line);
   border-radius: 8px;
@@ -328,6 +368,12 @@ h3 {
   text-align: center;
   white-space: pre-wrap;
   display: block;
+}
+
+mjx-container[jax="SVG"] {
+  max-width: 100%;
+  overflow-x: auto;
+  overflow-y: hidden;
 }
 
 .math-inline {
@@ -470,6 +516,7 @@ h3 {
 
 .profile-card {
   display: grid;
+  min-width: 0;
   gap: 18px;
   align-self: stretch;
   padding: 20px;
@@ -664,6 +711,7 @@ ul {
   background: rgba(50, 95, 143, 0.06);
   font-size: 13px;
   font-weight: 800;
+  overflow-wrap: anywhere;
 }
 
 .attachment-button:hover {
@@ -692,6 +740,7 @@ ul {
 }
 
 .content-card {
+  min-width: 0;
   padding: 20px;
 }
 
@@ -730,6 +779,14 @@ ul {
 }
 
 @media (max-width: 900px) {
+  h1 {
+    font-size: 56px;
+  }
+
+  .page-title h1 {
+    font-size: 48px;
+  }
+
   .hero,
   .split {
     grid-template-columns: 1fr;
@@ -737,6 +794,22 @@ ul {
 
   .hero {
     min-height: auto;
+    padding-top: 64px;
+    padding-bottom: 64px;
+  }
+
+  .section {
+    padding-top: 64px;
+    padding-bottom: 64px;
+  }
+
+  .section-heading {
+    max-width: none;
+  }
+
+  .section-heading.with-link {
+    flex-direction: row;
+    align-items: flex-end;
   }
 
   .portrait-wrap {
@@ -750,20 +823,120 @@ ul {
 
 @media (max-width: 620px) {
   .topbar {
-    align-items: flex-start;
+    align-items: stretch;
     flex-direction: column;
-    padding-top: 14px;
-    padding-bottom: 14px;
+    gap: 8px;
+    min-height: 0;
+    padding: 10px 0 0;
+  }
+
+  .brand {
+    padding: 0 18px;
   }
 
   .nav {
+    flex-wrap: nowrap;
     justify-content: flex-start;
+    gap: 4px;
+    width: 100%;
+    padding: 0 12px 8px;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  .nav a {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    min-height: 38px;
+    padding: 0 8px;
+  }
+
+  h1 {
+    font-size: 42px;
+    line-height: 1.08;
+  }
+
+  h2 {
+    font-size: 26px;
+  }
+
+  .page-main {
+    padding-top: 0;
+  }
+
+  .page-title {
+    padding: 48px 20px 26px;
+  }
+
+  .page-title h1 {
+    font-size: 40px;
+  }
+
+  .note-title-bar {
+    gap: 18px;
+    padding-top: 38px;
+    padding-bottom: 24px;
+  }
+
+  .note-title-bar h1 {
+    font-size: 24px;
+    line-height: 1.35;
+  }
+
+  .note-title-bar .text-link {
+    min-height: 36px;
+    padding: 6px 10px;
+  }
+
+  .page-title p,
+  .summary {
+    font-size: 16px;
   }
 
   .hero,
   .section {
-    padding-left: 22px;
-    padding-right: 22px;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .hero {
+    gap: 34px;
+    padding-top: 46px;
+    padding-bottom: 54px;
+  }
+
+  .section {
+    padding-top: 50px;
+    padding-bottom: 50px;
+  }
+
+  .wide-list,
+  .note-reader-section {
+    padding-top: 22px;
+  }
+
+  .section-heading.with-link {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 100%;
+  }
+
+  .button {
+    min-width: 0;
+    padding: 0 12px;
   }
 
   .info-grid {
@@ -776,6 +949,7 @@ ul {
 
   .profile-card-head {
     grid-template-columns: 96px minmax(0, 1fr);
+    gap: 14px;
   }
 
   .portrait-wrap {
@@ -787,5 +961,124 @@ ul {
   .note-title-bar {
     flex-direction: column;
     align-items: flex-start;
+  }
+
+  .item-head {
+    gap: 2px;
+  }
+
+  .item-head h3 {
+    margin-bottom: 4px;
+    overflow-wrap: anywhere;
+  }
+
+  .status {
+    flex: 1 1 auto;
+  }
+
+  .content-card,
+  .timeline-item,
+  .markdown-cell {
+    padding: 16px;
+  }
+
+  .card-attachments {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .attachment-button {
+    width: 100%;
+    min-height: 42px;
+    padding: 8px 10px;
+    text-align: center;
+  }
+
+  .markdown-cell h1 {
+    font-size: 26px;
+  }
+
+  .markdown-cell h2 {
+    font-size: 21px;
+  }
+
+  .markdown-cell h3 {
+    font-size: 18px;
+  }
+
+  .markdown-cell ol,
+  .markdown-cell ul {
+    padding-left: 22px;
+  }
+
+  .nb-input,
+  .nb-output,
+  .nb-output-empty {
+    display: block;
+  }
+
+  .cell-label,
+  .nb-output::before,
+  .nb-output-empty::before {
+    display: block;
+    width: auto;
+    padding: 9px 12px 5px;
+    text-align: left;
+  }
+
+  .nb-input pre,
+  .nb-output pre {
+    padding: 12px;
+  }
+
+  .note-cell pre {
+    font-size: 12px;
+  }
+
+  .nb-output-image img {
+    max-width: 100%;
+    padding: 12px;
+  }
+
+  .nb-output-html {
+    padding: 12px;
+  }
+
+  .nb-output-empty {
+    padding: 0 12px 12px;
+  }
+
+  .nb-output-empty::before {
+    margin-right: 0;
+    padding-left: 0;
+  }
+
+  .math-block {
+    padding: 10px 12px;
+    font-size: 15px;
+    text-align: left;
+  }
+
+  .footer {
+    padding: 24px 20px;
+  }
+}
+
+@media (max-width: 380px) {
+  .actions {
+    grid-template-columns: 1fr;
+  }
+
+  .profile-card-head {
+    align-items: start;
+    grid-template-columns: 76px minmax(0, 1fr);
+  }
+
+  .portrait-wrap {
+    width: 76px;
+  }
+
+  .profile-identity h2 {
+    font-size: 22px;
   }
 }
