@@ -642,6 +642,48 @@ ul {
   font-weight: 800;
 }
 
+.card-attachments {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 18px;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+}
+
+.attachment-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-height: 36px;
+  padding: 0 12px;
+  color: var(--blue);
+  border: 1px solid rgba(50, 95, 143, 0.32);
+  border-radius: 6px;
+  background: rgba(50, 95, 143, 0.06);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.attachment-button:hover {
+  border-color: var(--blue);
+  background: rgba(50, 95, 143, 0.11);
+}
+
+.attachment-button.disabled,
+.attachment-button.disabled:hover {
+  color: var(--muted);
+  border-color: var(--line);
+  background: #f4f5f6;
+  cursor: not-allowed;
+}
+
+.attachment-button span {
+  font-size: 17px;
+  line-height: 1;
+}
+
 .content-list,
 .portfolio-list,
 .notes-list {

@@ -9,13 +9,34 @@ const noteViewerLink = (link) => `note-viewer.html?file=${encodeURIComponent(lin
 
 const renderList = (items) => items.map((item) => `<li>${escapeHtml(item)}</li>`).join("");
 
+const renderAttachments = (attachments = []) => {
+  if (!attachments.length) {
+    return `
+      <div class="card-attachments empty" aria-label="附件">
+        <span class="attachment-button disabled" aria-disabled="true"><span aria-hidden="true">↓</span>附件待上传</span>
+      </div>
+    `;
+  }
+
+  return `
+    <div class="card-attachments" aria-label="附件下载">
+      ${attachments.map((attachment) => {
+        const file = typeof attachment === "string" ? attachment : attachment.file;
+        const label = typeof attachment === "string" ? "下载附件" : attachment.label || "下载附件";
+        return `<a class="attachment-button" href="${escapeHtml(file)}" download><span aria-hidden="true">↓</span>${escapeHtml(label)}</a>`;
+      }).join("")}
+    </div>
+  `;
+};
+
 const renderPortfolioItems = (items) => items.map((item) => `
   <article class="content-card">
     <div class="item-head">
-      <h3>${item.title}</h3>
-      <span class="status">${item.type} · ${item.status}</span>
+      <h3>${escapeHtml(item.title)}</h3>
+      <span class="status">${escapeHtml(item.type)}${item.status ? ` · ${escapeHtml(item.status)}` : ""}</span>
     </div>
-    <p>${item.summary}</p>
+    <p>${escapeHtml(item.summary)}</p>
+    ${renderAttachments(item.attachments)}
   </article>
 `).join("");
 
@@ -32,22 +53,24 @@ const renderNoteItems = (items) => items.map((item) => `
 const renderExperienceItems = (items) => items.map((item) => `
   <article class="content-card">
     <div class="item-head">
-      <h3>${item.company}</h3>
-      <span class="status">${item.role} · ${item.period}</span>
+      <h3>${escapeHtml(item.company)}</h3>
+      <span class="status">${escapeHtml(item.role)} · ${escapeHtml(item.period)}</span>
     </div>
     <ul>${renderList(item.items)}</ul>
+    ${renderAttachments(item.attachments)}
   </article>
 `).join("");
 
 const renderProjectItems = (items) => items.map((item) => `
   <article class="content-card">
     <div class="item-head">
-      <h3>${item.title}</h3>
-      <span class="status">${item.role} · ${item.period}</span>
+      <h3>${escapeHtml(item.title)}</h3>
+      <span class="status">${escapeHtml(item.role)} · ${escapeHtml(item.period)}</span>
     </div>
-    <div class="project-tags">${item.tags.map((tag) => `<span>${tag}</span>`).join("")}</div>
-    <p>${item.description}</p>
-    <p class="achievement">${item.achievement}</p>
+    <div class="project-tags">${item.tags.map((tag) => `<span>${escapeHtml(tag)}</span>`).join("")}</div>
+    <p>${escapeHtml(item.description)}</p>
+    <p class="achievement">${escapeHtml(item.achievement)}</p>
+    ${renderAttachments(item.attachments)}
   </article>
 `).join("");
 
@@ -542,7 +565,7 @@ const renderProfile = (data) => {
 
   document.getElementById("experience").innerHTML = renderExperienceItems(data.experience.slice(0, 3));
 
-  document.getElementById("project-list").innerHTML = renderProjectItems(data.projects);
+  document.getElementById("project-list").innerHTML = renderProjectItems(data.projects.slice(0, 3));
 
   document.getElementById("skills").innerHTML = data.skills
     .map((skill) => `<span class="tag">${skill}</span>`)
