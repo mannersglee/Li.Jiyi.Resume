@@ -145,11 +145,18 @@
   ],
   "notes": [
     {
-      "title": "机器学习",
+      "title": "数学收敛性总结",
       "category": "学习笔记",
-      "date": "2026-09-15",
-      "link": "notes/machine-learning-note.ipynb",
-      "summary": "整理监督学习、无监督学习、模型评估、特征工程和深度学习的复习路径。"
+      "date": "2026-10-13",
+      "link": "notes/收敛性总结.md",
+      "summary": "概率论、实变函数与泛函分析中的收敛性：定义、联系、区别与判别方法"
+    },
+    {
+      "title": "数学可交换性总结",
+      "category": "学习笔记",
+      "date": "2026-10-13",
+      "link": "notes/可交换性总结.md",
+      "summary": "数学分析与测度论中的运算可交换性总结"
     }
   ]
 }
